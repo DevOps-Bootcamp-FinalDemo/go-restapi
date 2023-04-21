@@ -1,0 +1,27 @@
+Add GOBIN to PATH (into ~/.profile or ~/.bashrc) or it equivalent in Windows
+The above is useful to run commands from command line after "go install"
+
+https://pkg.go.dev/ to search packages
+List of Packages used:
+air: https://pkg.go.dev/github.com/cosmtrek/air to live reloading (CLI command)
+GoDotEnv: https://pkg.go.dev/github.com/joho/godotenv to get env vars
+Gin: https://pkg.go.dev/github.com/gin-gonic/gin web framework
+Gorm: https://pkg.go.dev/gorm.io/gorm ORM Library
+Gorm Postgres Driver: https://pkg.go.dev/gorm.io/driver/postgres
+
+Useful Docs:
+https://go.dev/doc/code ¡¡¡IMPORTANTISIMO!!! (old docs: https://go.dev/doc/gopath_code)
+https://www.reddit.com/r/golang/comments/vsacp3/im_having_a_hard_time_understanding_go111module/
+https://eli.thegreenplace.net/2020/you-dont-need-virtualenv-in-go/
+https://pkg.go.dev/cmd/go/internal/get
+https://go.dev/ref/mod#go-install
+https://pkg.go.dev/cmd/go#hdr-Add_dependencies_to_current_module_and_install_them
+https://pkg.go.dev/cmd/go#hdr-Compile_and_install_packages_and_dependencies
+
+Curiosity:
+https://unixcop.com/create-golang-virtual-environments-using-conda/
+
+COMMANDS:
+docker run --rm --name postgres -h postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=gorm -p 9091:5432 -d postgres
+docker inspect postgres | grep IPAddress
+docker run -d -p 9090:9090 --rm --name go-restapi krizz23/go-restapi

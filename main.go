@@ -16,7 +16,7 @@ func main() {
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "Testing the entire pipeline!!!",
+			"message": "Testing the entire pipeline v2!!!",
 		})
 	})
 

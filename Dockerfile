@@ -14,7 +14,8 @@ RUN go mod download && go mod verify
 COPY . ./
 
 # Do the migration
-RUN go run migrate/migrate.go
+#RUN go run migrate/migrate.go
+#https://github.com/go-gorm/gorm/issues/5175
 
 # Build the binary.
 RUN go build -v -o main .

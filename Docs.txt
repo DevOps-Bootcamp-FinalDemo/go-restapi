@@ -18,6 +18,9 @@ https://go.dev/ref/mod#go-install
 https://pkg.go.dev/cmd/go#hdr-Add_dependencies_to_current_module_and_install_them
 https://pkg.go.dev/cmd/go#hdr-Compile_and_install_packages_and_dependencies
 
+To Dockerfile:
+https://medium.com/swlh/reducing-container-image-size-esp-for-go-applications-db7658e9063a
+
 Curiosity:
 https://unixcop.com/create-golang-virtual-environments-using-conda/
 

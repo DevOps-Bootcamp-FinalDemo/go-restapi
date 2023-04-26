@@ -1,3 +1,4 @@
+/* groovylint-disable DuplicateStringLiteral, GStringExpressionWithinString, LineLength, NestedBlockDepth */
 pipeline {
     agent { label 'worker1' }
     stages {

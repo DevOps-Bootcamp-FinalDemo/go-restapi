@@ -23,7 +23,7 @@ pipeline {
         stage('Cleaning') {
             steps {
                 sh '''#!/bin/bash
-                    docker rmi $(docker images 'krizz23/go-restapi' -a -q)
+                    docker rmi $(docker images 'krizz23/go-restapi' -a -q) || true
                 '''
             }
         }

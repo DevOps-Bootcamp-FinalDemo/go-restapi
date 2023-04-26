@@ -23,9 +23,7 @@ pipeline {
         }
         stage('Cleaning') {
             steps {
-                sh '''#!/bin/bash
-                    docker system prune -fa --volumes
-                '''
+                sh 'docker rmi -f $(docker images -q krizz23/go-restapi)'
             }
         }
     }

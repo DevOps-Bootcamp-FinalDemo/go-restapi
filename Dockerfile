@@ -1,4 +1,5 @@
-FROM golang:1.20.3-alpine3.17
+# Build Stage
+FROM golang:1.20.3-alpine3.17 AS builder
 
 # Create and change to the app directory.
 WORKDIR /app
@@ -18,6 +19,11 @@ RUN go run migrate/migrate.go
 # Build the binary.
 RUN go build -v -o main .
 
+# Run Stage
+FROM alpine:3.17
+WORKDIR /app
+COPY --from=builder /app/main .
+COPY .env .
 EXPOSE 9090
 
 # Run the service

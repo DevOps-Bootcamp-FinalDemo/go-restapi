@@ -24,7 +24,7 @@ pipeline {
         stage('Cleaning') {
             steps {
                 sh '''#!/bin/bash
-                    sudo docker system prune -fa --volumes
+                    docker system prune -fa --volumes
                 '''
             }
         }

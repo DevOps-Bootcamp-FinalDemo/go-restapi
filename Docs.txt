@@ -21,10 +21,16 @@ https://pkg.go.dev/cmd/go#hdr-Compile_and_install_packages_and_dependencies
 To Dockerfile:
 https://medium.com/swlh/reducing-container-image-size-esp-for-go-applications-db7658e9063a
 
+Internal Compiler Errors Docs:
+https://github.com/golang/go/issues/53924
+https://github.com/golang/go/issues/51909
+https://github.com/golang/go/issues/53800
+https://github.com/golang/go/issues/58325
+
 Curiosity:
 https://unixcop.com/create-golang-virtual-environments-using-conda/
 
 COMMANDS:
 docker run --rm --name postgres -h postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=gorm -p 9091:5432 -d postgres
 docker inspect postgres | grep IPAddress
-docker run -d -p 9090:9090 --rm --name go-restapi krizz23/go-restapi
+docker run -d -p 9090:9090 --rm --name go-restapi krizz23/go-restapi:jenkins

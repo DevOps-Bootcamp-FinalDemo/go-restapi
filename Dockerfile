@@ -1,5 +1,5 @@
 # Build Stage
-FROM golang:1.20.3-alpine3.17 AS builder
+FROM golang:1.19.9-alpine3.18 AS builder
 
 # Create and change to the app directory.
 WORKDIR /app
@@ -14,7 +14,7 @@ RUN go mod download && go mod verify
 COPY . ./
 
 # Do the migration
-#RUN go run migrate/migrate.go
+RUN go run migrate/migrate.go
 #https://github.com/go-gorm/gorm/issues/5175
 
 # Build the binary.

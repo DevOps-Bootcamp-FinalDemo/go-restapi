@@ -21,7 +21,7 @@ RUN go run migrate/migrate.go
 RUN go build -v -o main .
 
 # Run Stage
-FROM alpine:3.17
+FROM alpine:3.18
 WORKDIR /app
 COPY --from=builder /app/main .
 COPY .env .

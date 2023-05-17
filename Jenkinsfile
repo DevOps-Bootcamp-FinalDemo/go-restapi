@@ -24,7 +24,7 @@ pipeline {
         }
         stage('Cleaning') {
             steps {
-                sh 'docker rmi -f $(docker images -q krizz23/go-restapi)'
+                sh 'docker images | grep krizz23/go-restapi && docker rmi $(docker images -q krizz23/go-restapi);'
             }
         }
     }

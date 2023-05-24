@@ -16,7 +16,7 @@ func main() {
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "Hello from DEMOv2 (on ECS) Test#4!!!",
+			"message": "Hello from DEMOv2 (on ECS) Test#5 (Definitive Edition)!!!",
 		})
 	})
 

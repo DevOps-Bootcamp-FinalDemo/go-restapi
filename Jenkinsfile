@@ -53,7 +53,7 @@ pipeline {
         stage('Add task definition') {
             steps {
                 script {
-                    sh " sed -i -e 's;%APPNAME%;${APPNAME};g' -e 's;%ECRIMAGEN%;${REPO_NAME}:${COMMIT};g' deploy/ec2-task-definition.json"
+                    sh " sed -i -e 's;%APPNAME%;${APPNAME};g' -e 's;%ECRIMAGEN%;${REPO_NAME}:latest;g' deploy/ec2-task-definition.json"
                     sh " sed -i -e 's;%IMAGEPORT%;${IMAGE_PORT};g' deploy/ec2-task-definition.json"
                     TASK_DEFINITION = sh(returnStdout: true, script:"\
                     aws ecs register-task-definition --region ${AWS_REGION} --cli-input-json file://deploy/ec2-task-definition.json\

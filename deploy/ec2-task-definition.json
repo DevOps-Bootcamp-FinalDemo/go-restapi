@@ -1,6 +1,6 @@
 {
   "executionRoleArn": "arn:aws:iam::271094303657:role/ecsTaskExecutionRole",
-  "memory": "512",
+  "memory": "256",
   "cpu": "256",
   "taskRoleArn": "arn:aws:iam::271094303657:role/ecsTaskExecutionRole",
   "family": "%APPNAME%",
@@ -9,7 +9,7 @@
       "name": "%APPNAME%",
       "image": "%ECRIMAGEN%",
       "cpu": 256,
-      "memoryReservation": 512,
+      "memoryReservation": 256,
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {

@@ -23,7 +23,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    git branch: 'main', url: 'https://github.com/kriz23/go-restapi'
+                    git branch: 'ecs-deployment', url: 'https://github.com/kriz23/go-restapi'
                     withCredentials([string(credentialsId: 'GO_RESTAPI_DB_URL', variable: 'GO_RESTAPI_DB_URL')]) {
                         sh 'echo "DB_URL=\"${GO_RESTAPI_DB_URL}\"" > .env;'
                         sh 'sleep 2;'
@@ -53,7 +53,7 @@ pipeline {
         stage('Add task definition') {
             steps {
                 script {
-                    sh " sed -i -e 's;%APPNAME%;${APPNAME};g' -e 's;%ECRIMAGEN%;${REPO_NAME};g' deploy/ec2-task-definition.json"
+                    sh " sed -i -e 's;%APPNAME%;${APPNAME};g' -e 's;%ECRIMAGEN%;${REPO_NAME}:latest;g' deploy/ec2-task-definition.json"
                     sh " sed -i -e 's;%IMAGEPORT%;${IMAGE_PORT};g' deploy/ec2-task-definition.json"
                     TASK_DEFINITION = sh(returnStdout: true, script:"\
                     aws ecs register-task-definition --region ${AWS_REGION} --cli-input-json file://deploy/ec2-task-definition.json\

@@ -64,7 +64,7 @@ pipeline {
         stage('Create Service') {
             steps {
                 script {
-                    TASK_DEFINITION = sh(returnStdout: true, script: "aws ecs create-service --launch-type EC2 --cluster ${CLUSTER_NAME} --desired-count 1 --service-name ${SERVICE_NAME} --region ${AWS_REGION} --task-definition ${APPNAME}")
+                    TASK_DEFINITION = sh(returnStdout: true, script: "aws ecs create-service --launch-type EC2 --cluster ${CLUSTER_NAME} --desired-count 1 --service-name ${SERVICE_NAME} --region ${AWS_REGION} --task-definition ${APPNAME} || true")
                 }
             }
         }

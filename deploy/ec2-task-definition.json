@@ -1,0 +1,38 @@
+{
+  "executionRoleArn": "arn:aws:iam::271094303657:role/ecsTaskExecutionRole",
+  "memory": "512",
+  "cpu": "256",
+  "taskRoleArn": "arn:aws:iam::271094303657:role/ecsTaskExecutionRole",
+  "family": "%APPNAME%",
+  "containerDefinitions": [
+    {
+      "name": "%APPNAME%",
+      "image": "%ECRIMAGEN%",
+      "cpu": 256,
+      "memoryReservation": 512,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "%APPNAME%",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "protocol": "tcp",
+          "containerPort": %IMAGEPORT%
+        }
+      ],
+      "environment": [],
+      "essential": true,
+      "readonlyRootFilesystem": false
+    }
+  ],
+  "requiresCompatibilities": [
+    "EC2"
+  ],
+  "networkMode": "bridge",
+  "volumes": []
+}

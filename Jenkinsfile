@@ -71,7 +71,7 @@ pipeline {
         stage('Update Service') {
             steps {
                 script {
-                    TASK_DEFINITION = sh(returnStdout: true, script: "aws ecs update-service --cluster ${CLUSTER_NAME} --desired-count 1 --service ${SERVICE_NAME} --region ${AWS_REGION} --task-definition ${APPNAME}")
+                    TASK_DEFINITION = sh(returnStdout: true, script: "aws ecs update-service --cluster ${CLUSTER_NAME} --desired-count 1 --service ${SERVICE_NAME} --region ${AWS_REGION} --task-definition ${APPNAME} --force-new-deployment")
                 }
             }
         }

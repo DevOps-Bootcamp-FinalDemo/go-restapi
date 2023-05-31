@@ -6,14 +6,14 @@ def jsonParse(def json) {
     new groovy.json.JsonSlurperClassic().parseText(json)
 }
 pipeline {
-    agent { label 'worker3' }
+    agent { label 'ecs-agent' }
     environment {
         APPNAME = 'go-restapi'
         IMAGE_NAME = 'go-restapi'
         AWS_REGION = 'us-east-1'
         AWS_ACCOUNT = credentials('AWS_ACC_ID')
-        CLUSTER_NAME = 'Demov2-Cluster'
-        SERVICE_NAME = 'demov2'
+        CLUSTER_NAME = 'go-restapi-demo-cluster'
+        SERVICE_NAME = 'go-restapi-demo-service'
         IMAGE_PORT = '9090'
         COMMIT = getShortCommitId()
         TASK_DEFINITION_NAME = "${APPNAME}"
@@ -23,13 +23,13 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    git branch: 'ecs-deployment', url: 'https://github.com/kriz23/go-restapi'
+                    git branch: 'develop', url: 'https://github.com/kriz23/go-restapi'
                     withCredentials([string(credentialsId: 'GO_RESTAPI_DB_URL', variable: 'GO_RESTAPI_DB_URL')]) {
                         sh 'echo "DB_URL=\"${GO_RESTAPI_DB_URL}\"" > .env;'
                         sh 'sleep 2;'
                     }
-                    sh "docker build -t ${REPO_NAME} . --no-cache"
-                    sh "docker tag ${REPO_NAME}:latest ${REPO_NAME}:${COMMIT}"
+                    sh "docker build -t ${REPO_NAME} . --no-cache;"
+                    sh "docker tag ${REPO_NAME}:latest ${REPO_NAME}:${COMMIT};"
                 }
             }
         }
@@ -45,33 +45,14 @@ pipeline {
         stage('Cleaning') {
             steps {
                 script {
-                    sh "docker rmi ${REPO_NAME}:${COMMIT};"
-                    sh "docker rmi ${REPO_NAME}:latest;"
-                }
-            }
-        }
-        stage('Add task definition') {
-            steps {
-                script {
-                    sh " sed -i -e 's;%APPNAME%;${APPNAME};g' -e 's;%ECRIMAGEN%;${REPO_NAME}:latest;g' deploy/ec2-task-definition.json"
-                    sh " sed -i -e 's;%IMAGEPORT%;${IMAGE_PORT};g' deploy/ec2-task-definition.json"
-                    TASK_DEFINITION = sh(returnStdout: true, script:"\
-                    aws ecs register-task-definition --region ${AWS_REGION} --cli-input-json file://deploy/ec2-task-definition.json\
-                    ")
-                }
-            }
-        }
-        stage('Create Service') {
-            steps {
-                script {
-                    TASK_DEFINITION = sh(returnStdout: true, script: "aws ecs create-service --launch-type EC2 --cluster ${CLUSTER_NAME} --desired-count 1 --service-name ${SERVICE_NAME} --region ${AWS_REGION} --task-definition ${APPNAME} --deployment-configuration 'minimumHealthyPercent=0,maximumPercent=100' || true")
+                    sh 'docker system prune -fa;'
                 }
             }
         }
         stage('Update Service') {
             steps {
                 script {
-                    TASK_DEFINITION = sh(returnStdout: true, script: "aws ecs update-service --cluster ${CLUSTER_NAME} --desired-count 1 --service ${SERVICE_NAME} --region ${AWS_REGION} --task-definition ${APPNAME} --force-new-deployment")
+                    TASK_DEFINITION = sh(returnStdout: true, script: "aws ecs update-service --cluster ${CLUSTER_NAME} --service ${SERVICE_NAME} --force-new-deployment;")
                 }
             }
         }

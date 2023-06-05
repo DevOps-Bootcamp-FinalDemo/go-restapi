@@ -31,15 +31,18 @@ func TestRootRoute(t *testing.T) {
 	}
 
 	// Convert the response body to a map
-	expectedBody := gin.H{}
-	if err := json.Unmarshal(rr.Body.Bytes(), &expectedBody); err != nil {
+	var expectedBody = gin.H{
+		"message": "Hello from FINAL DEMO presentation!!!",
+	}
+
+	currentBody := gin.H{}
+	if err := json.Unmarshal(rr.Body.Bytes(), &currentBody); err != nil {
 		t.Errorf("Error unmarshalling body: %v", err)
 	}
 
 	// Check the response body
-	if !reflect.DeepEqual(expectedBody, gin.H{
-		"message": "Hello from FINAL DEMO presentation!!!",
-	}) {
-		t.Errorf("Expected body %v, got %v", expectedBody, rr.Body.Bytes())
+	if !reflect.DeepEqual(currentBody, expectedBody) {
+		jsonExpected, _ := json.Marshal(expectedBody)
+		t.Errorf("Expected body %v, got %v\n", string(jsonExpected), rr.Body)
 	}
 }

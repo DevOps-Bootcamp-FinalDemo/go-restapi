@@ -12,11 +12,11 @@ func init() {
 	initializers.DBConnection()
 }
 
-func main() {
+func setupRouter() *gin.Engine {
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "Hello from DEMOv3 presentation (Infrastructure from CloudFormation)!!!",
+			"message": "Hello from FINAL DEMO presentation!!!",
 		})
 	})
 
@@ -26,5 +26,10 @@ func main() {
 	r.PUT("/posts/:id", controllers.UpdatePost)
 	r.DELETE("/posts/:id", controllers.DeletePost)
 
+	return r
+}
+
+func main() {
+	r := setupRouter()
 	r.Run(":9090")
 }

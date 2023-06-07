@@ -20,14 +20,49 @@ pipeline {
         REPO_NAME = "${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}"
     }
     stages {
-        stage('Build') {
+        stage('Clone repository & create .env') {
             steps {
                 script {
-                    git branch: 'develop', url: 'https://github.com/kriz23/go-restapi'
+                    git branch: 'main', url: 'https://github.com/DevOps-Bootcamp-FinalDemo/go-restapi/'
                     withCredentials([string(credentialsId: 'GO_RESTAPI_DB_URL', variable: 'GO_RESTAPI_DB_URL')]) {
                         sh 'echo "DB_URL=\"${GO_RESTAPI_DB_URL}\"" > .env;'
-                        sh 'sleep 2;'
                     }
+                }
+            }
+        }
+        stage('Run unit tests') {
+            steps {
+                script {
+                    sh '/usr/local/go/bin/go mod download && /usr/local/go/bin/go mod verify;'
+                    sh '/usr/local/go/bin/go test -v;'
+                    sh '/usr/local/go/bin/go test -json > test-report.out'
+                    sh '/usr/local/go/bin/go test -coverprofile=coverage.out;'
+                }
+            }
+        }
+        stage('SonarQube code analysis') {
+            environment {
+                scannerHome = tool 'SonarQube-Scanner'
+                projectKey = 'go-restapi-key'
+                projectName = 'go-restapi'
+            }
+            steps {
+                withSonarQubeEnv('SonarQube-Server') {
+                    sh """${scannerHome}/bin/sonar-scanner \
+                        -Dsonar.projectKey=${projectKey} \
+                        -Dsonar.projectName='${projectName}' \
+                        -Dsonar.sources=."""
+                }
+            }
+        }
+        stage('Quality gate') {
+            steps {
+                waitForQualityGate abortPipeline: true
+            }
+        }
+        stage('Build & tag image') {
+            steps {
+                script {
                     sh "docker build -t ${REPO_NAME} . --no-cache;"
                     sh "docker tag ${REPO_NAME}:latest ${REPO_NAME}:${COMMIT};"
                 }
@@ -49,7 +84,7 @@ pipeline {
                 }
             }
         }
-        stage('Update Service') {
+        stage('Deploy to production environment') {
             steps {
                 script {
                     TASK_DEFINITION = sh(returnStdout: true, script: "aws ecs update-service --cluster ${CLUSTER_NAME} --service ${SERVICE_NAME} --force-new-deployment;")

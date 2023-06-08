@@ -16,7 +16,7 @@ func setupRouter() *gin.Engine {
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "Hello from FINAL DEMO presentation!!!",
+			"message": "Hello from TESTING UNIT TEST in FINAL DEMO presentation!!!",
 		})
 	})
 

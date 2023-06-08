@@ -32,7 +32,7 @@ func TestRootRoute(t *testing.T) {
 
 	// Convert the response body to a map
 	var expectedBody = gin.H{
-		"message": "Hello from FINAL DEMO presentation!!!",
+		"message": "Hello from FINAL DEMO presentation (June 8)!!!",
 	}
 
 	currentBody := gin.H{}
